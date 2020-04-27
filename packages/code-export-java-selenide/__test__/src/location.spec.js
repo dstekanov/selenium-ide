@@ -60,14 +60,14 @@ describe('location code emitter', () => {
     const type = 'css'
     const selector = 'someCss'
     return expect(emit(`${type}=${selector}`)).resolves.toBe(
-      `("${selector}")`
+      `"${selector}"`
     )
   })
   it('should emit css locator with `=` sign', () => {
     const type = 'css'
     const selector = 'a[title=JScript]'
     return expect(emit(`${type}=${selector}`)).resolves.toBe(
-      `("${selector}")`
+      `"${selector}"`
     )
   })
   it('should escape quotes in locator strings', () => {

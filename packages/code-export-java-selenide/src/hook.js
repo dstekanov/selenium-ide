@@ -45,12 +45,12 @@ function afterAll() {
   const params = {
     startingSyntax: {
       commands: [
-        { level: 0, statement: '@AfterAll' },
-        { level: 0, statement: 'public static void finalTearDown() {' },
+        {level: 0, statement: '@AfterAll'},
+        {level: 0, statement: 'public static void finalTearDown() {'},
       ],
     },
     endingSyntax: {
-      commands: [{ level: 0, statement: '}' }],
+      commands: [{level: 0, statement: '}'}],
     },
     registrationLevel: 1,
   }
@@ -61,12 +61,12 @@ function afterEach() {
   const params = {
     startingSyntax: {
       commands: [
-        { level: 0, statement: '@AfterEach' },
-        { level: 0, statement: 'public void tearDown() {' },
+        {level: 0, statement: '@AfterEach'},
+        {level: 0, statement: 'public void tearDown() {'},
       ],
     },
     endingSyntax: {
-      commands: [{ level: 0, statement: '}' }],
+      commands: [{level: 0, statement: '}'}],
     },
   }
   return params
@@ -96,12 +96,12 @@ function beforeEach() {
           level: 0,
           statement: `public void setUp() {`,
         },
-        {level: 1, statement: `Configuration.browser = ${browserName ? browserName : 'chrome'}`},
+        {level: 1, statement: `Configuration.browser = "${browserName ? browserName.toLowerCase() : 'chrome'}";`},
         {
           level: 1,
           statement: gridUrl
             ? `Configuration.remote = "${gridUrl}";`
-            : ``,
+            : `Configuration.remote = null;`,
         },
       ],
     }),
@@ -115,19 +115,18 @@ function declareDependencies() {
   const params = {
     startingSyntax: {
       commands: [
-        { level: 0, statement: 'import org.junit.jupiter.api.Test;' },
-        { level: 0, statement: 'import org.junit.jupiter.api.BeforeAll;' },
-        { level: 0, statement: 'import org.junit.jupiter.api.BeforeEach;' },
-        { level: 0, statement: 'import org.junit.jupiter.api.AfterAll;' },
-        { level: 0, statement: 'import org.junit.jupiter.api.AfterEach;' },
-        { level: 0, statement: 'import com.codeborne.selenide.Configuration;' },
-        { level: 0, statement: 'import com.codeborne.selenide.Selectors;' },
-        { level: 0, statement: 'import static com.codeborne.selenide.Condition.*;' },
-        { level: 0, statement: 'import static com.codeborne.selenide.Selenide.*;' },
-        { level: 0, statement: 'import static org.junit.jupiter.api.Assertions.*;' },
-        { level: 0, statement: 'import org.openqa.selenium.By;' },
-        { level: 0, statement: 'import org.openqa.selenium.Dimension;' },
-        { level: 0, statement: 'import java.util.*;' },
+        {level: 0, statement: 'import org.junit.jupiter.api.Test;'},
+        {level: 0, statement: 'import org.junit.jupiter.api.BeforeAll;'},
+        {level: 0, statement: 'import org.junit.jupiter.api.BeforeEach;'},
+        {level: 0, statement: 'import org.junit.jupiter.api.AfterAll;'},
+        {level: 0, statement: 'import org.junit.jupiter.api.AfterEach;'},
+        {level: 0, statement: 'import com.codeborne.selenide.Configuration;'},
+        {level: 0, statement: 'import com.codeborne.selenide.Selectors;'},
+        {level: 0, statement: 'import static com.codeborne.selenide.Condition.*;'},
+        {level: 0, statement: 'import static com.codeborne.selenide.Selenide.*;'},
+        {level: 0, statement: 'import static org.junit.jupiter.api.Assertions.*;'},
+        {level: 0, statement: 'import org.openqa.selenium.Dimension;'},
+        {level: 0, statement: 'import java.util.*;'},
       ],
     },
   }

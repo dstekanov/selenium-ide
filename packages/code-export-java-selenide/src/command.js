@@ -150,11 +150,7 @@ function emitWaitForWindow() {
     return `public String ${name}(int timeout) {`
   }
   const commands = [
-    { level: 0, statement: 'try {' },
-    { level: 1, statement: 'Thread.sleep(timeout);' },
-    { level: 0, statement: '} catch (InterruptedException e) {' },
-    { level: 1, statement: 'e.printStackTrace();' },
-    { level: 0, statement: '}' },
+    { level: 0, statement: 'Selenide.sleep(timeout);' },
     { level: 0, statement: 'Set<String> whNow = WebDriverRunner.getWebDriver().getWindowHandles();' },
     {
       level: 0,
@@ -388,7 +384,7 @@ async function emitMouseMove(locator) {
 
 async function emitMouseOut() {
   return Promise.resolve(
-    `Selenide.actions().moveToElement($(By.tagName("body")), 0, 0).perform();`
+    `Selenide.actions().moveToElement($(Selectors.byTagName("body")), 0, 0).perform();`
   )
 }
 

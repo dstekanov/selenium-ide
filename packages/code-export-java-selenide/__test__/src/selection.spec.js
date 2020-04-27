@@ -39,14 +39,14 @@ describe('selection location code emitter', () => {
     const type = 'id'
     const selector = 'someId'
     return expect(emit(`${type}=${selector}`)).resolves.toBe(
-      `Selectors.byId("*[id='${selector}']")`
+      `Selectors.byId("${selector}")`
     )
   })
   it('should emit value locator', () => {
     const type = 'value'
     const selector = 'someValue'
     return expect(emit(`${type}=${selector}`)).resolves.toBe(
-      `Selectors.byValue("*[value='${selector}']")`
+      `Selectors.byValue("${selector}")`
     )
   })
   it('should emit index locator', () => {
