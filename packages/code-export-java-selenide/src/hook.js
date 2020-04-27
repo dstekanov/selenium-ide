@@ -46,7 +46,7 @@ function afterAll() {
     startingSyntax: {
       commands: [
         { level: 0, statement: '@AfterAll' },
-        { level: 0, statement: 'public void finalTearDown() {' },
+        { level: 0, statement: 'public static void finalTearDown() {' },
       ],
     },
     endingSyntax: {
@@ -61,7 +61,7 @@ function afterEach() {
   const params = {
     startingSyntax: {
       commands: [
-        { level: 0, statement: '@After' },
+        { level: 0, statement: '@AfterEach' },
         { level: 0, statement: 'public void tearDown() {' },
       ],
     },
@@ -77,7 +77,7 @@ function beforeAll() {
     startingSyntax: {
       commands: [
         {level: 0, statement: '@BeforeAll'},
-        {level: 0, statement: 'public void initialSetUp() {'},
+        {level: 0, statement: 'public static void initialSetUp() {'},
       ],
     },
     endingSyntax: {
@@ -91,10 +91,17 @@ function beforeEach() {
   return {
     startingSyntax: ({browserName, gridUrl} = {}) => ({
       commands: [
-        {level: 0, statement: '@Before'},
+        {level: 0, statement: '@BeforeEach'},
         {
           level: 0,
           statement: `public void setUp() {`,
+        },
+        {level: 1, statement: `Configuration.browser = ${browserName ? browserName : 'chrome'}`},
+        {
+          level: 1,
+          statement: gridUrl
+            ? `Configuration.remote = "${gridUrl}";`
+            : ``,
         },
       ],
     }),
@@ -108,57 +115,19 @@ function declareDependencies() {
   const params = {
     startingSyntax: {
       commands: [
-        { level: 0, statement: 'import org.junit.Test;' },
-        { level: 0, statement: 'import org.junit.Before;' },
-        { level: 0, statement: 'import org.junit.After;' },
-        { level: 0, statement: 'import static org.junit.Assert.*;' },
-        { level: 0, statement: 'import static org.hamcrest.CoreMatchers.is;' },
-        { level: 0, statement: 'import static org.hamcrest.core.IsNot.not;' },
-        { level: 0, statement: 'import org.openqa.selenium.By;' },
-        { level: 0, statement: 'import org.openqa.selenium.WebDriver;' },
-        {
-          level: 0,
-          statement: 'import org.openqa.selenium.firefox.FirefoxDriver;',
-        },
-        {
-          level: 0,
-          statement: 'import org.openqa.selenium.chrome.ChromeDriver;',
-        },
-        {
-          level: 0,
-          statement: 'import org.openqa.selenium.remote.RemoteWebDriver;',
-        },
-        {
-          level: 0,
-          statement: 'import org.openqa.selenium.remote.DesiredCapabilities;',
-        },
-        { level: 0, statement: 'import org.openqa.selenium.Dimension;' },
-        { level: 0, statement: 'import org.openqa.selenium.WebElement;' },
-        {
-          level: 0,
-          statement: 'import org.openqa.selenium.interactions.Actions;',
-        },
-        {
-          level: 0,
-          statement:
-            'import org.openqa.selenium.support.ui.ExpectedConditions;',
-        },
-        {
-          level: 0,
-          statement: 'import org.openqa.selenium.support.ui.WebDriverWait;',
-        },
-        {
-          level: 0,
-          statement: 'import org.openqa.selenium.JavascriptExecutor;',
-        },
-        { level: 0, statement: 'import org.openqa.selenium.Alert;' },
-        { level: 0, statement: 'import org.openqa.selenium.Keys;' },
-        { level: 0, statement: 'import java.util.*;' },
-        { level: 0, statement: 'import java.net.MalformedURLException;' },
-        { level: 0, statement: 'import java.net.URL;' },
+        { level: 0, statement: 'import org.junit.jupiter.api.Test;' },
+        { level: 0, statement: 'import org.junit.jupiter.api.BeforeAll;' },
+        { level: 0, statement: 'import org.junit.jupiter.api.BeforeEach;' },
+        { level: 0, statement: 'import org.junit.jupiter.api.AfterAll;' },
+        { level: 0, statement: 'import org.junit.jupiter.api.AfterEach;' },
+        { level: 0, statement: 'import com.codeborne.selenide.Configuration;' },
+        { level: 0, statement: 'import com.codeborne.selenide.Selectors;' },
         { level: 0, statement: 'import static com.codeborne.selenide.Condition.*;' },
-        { level: 0, statement: 'import static com.codeborne.selenide.Selectors.*;' },
         { level: 0, statement: 'import static com.codeborne.selenide.Selenide.*;' },
+        { level: 0, statement: 'import static org.junit.jupiter.api.Assertions.*;' },
+        { level: 0, statement: 'import org.openqa.selenium.By;' },
+        { level: 0, statement: 'import org.openqa.selenium.Dimension;' },
+        { level: 0, statement: 'import java.util.*;' },
       ],
     },
   }

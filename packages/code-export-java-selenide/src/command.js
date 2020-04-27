@@ -145,7 +145,6 @@ function variableSetter(varName, value) {
   return varName ? `vars.put("${varName}", ${value});` : ''
 }
 
-// TODO: we don't need it or change it
 function emitWaitForWindow() {
   const generateMethodDeclaration = name => {
     return `public String ${name}(int timeout) {`
@@ -156,7 +155,7 @@ function emitWaitForWindow() {
     { level: 0, statement: '} catch (InterruptedException e) {' },
     { level: 1, statement: 'e.printStackTrace();' },
     { level: 0, statement: '}' },
-    { level: 0, statement: 'Set<String> whNow = driver.getWindowHandles();' },
+    { level: 0, statement: 'Set<String> whNow = WebDriverRunner.getWebDriver().getWindowHandles();' },
     {
       level: 0,
       statement:
@@ -174,10 +173,9 @@ function emitWaitForWindow() {
   })
 }
 
-// TODO: we don't need it or change it
 async function emitNewWindowHandling(command, emittedCommand) {
   return Promise.resolve(
-    `vars.put("window_handles", driver.getWindowHandles());\n${await emittedCommand}\nvars.put("${
+    `vars.put("window_handles", WebDriverRunner.getWebDriver().getWindowHandles());\n${await emittedCommand}\nvars.put("${
       command.windowHandleName
     }", waitForWindow(${command.windowTimeout}));`
   )
@@ -191,7 +189,7 @@ function emitAssert(varName, value) {
 
 function emitAssertAlert(alertText) {
   return Promise.resolve(
-    `assertThat(Selenide.switchTo().alert().getText(), is("${alertText}"));`
+    `assertEquals(Selenide.switchTo().alert().getText(), "${alertText}");`
   )
 }
 
@@ -217,21 +215,17 @@ function emitChooseOkOnNextConfirmation() {
 
 async function emitClick(target) {
   return Promise.resolve(
-    `${await location.emit(target)}.click();`
+    `$(${await location.emit(target)}).click();`
   )
 }
 
-
-// ---------------- DONE ^^^ ----------------
-
-
 async function emitClose() {
-  return Promise.resolve(`driver.close();`)
+  return Promise.resolve(`WebDriverRunner.closeWebDriver();`)
 }
 
 function generateExpressionScript(script) {
   const scriptString = script.script.replace(/"/g, "'")
-  return `(Boolean) js.executeScript("return (${scriptString})"${generateScriptArguments(
+  return `(Boolean) Selenide.executeJavaScript("return (${scriptString})"${generateScriptArguments(
     script
   )})`
 }
@@ -329,13 +323,13 @@ function emitControlFlowWhile(script) {
 
 async function emitDoubleClick(target) {
   return Promise.resolve(
-    `${await location.emit(target)}.doubleClick();`
+    `$(${await location.emit(target)}).doubleClick();`
   )
 }
 
 async function emitDragAndDrop(dragged, dropped) {
   return Promise.resolve(
-    `${await location.emit(dragged)}.dragAndDropTo(${await location.emit(dropped)});`
+    `$(${await location.emit(dragged)}).dragAndDropTo(${await location.emit(dropped)});`
   )
 }
 
@@ -349,7 +343,7 @@ async function emitEditContent(locator, content) {
     {level: 0, statement: '{'},
     {
       level: 1,
-      statement: `SelenideElement element = ${await location.emit(locator)};`,
+      statement: `SelenideElement element = $(${await location.emit(locator)});`,
     },
     {
       level: 1,
@@ -361,14 +355,14 @@ async function emitEditContent(locator, content) {
 }
 
 async function emitExecuteScript(script, varName) {
-  const result = `js.executeScript("${script.script}"${generateScriptArguments(
+  const result = `Selenide.executeJavaScript("${script.script}"${generateScriptArguments(
     script
   )})`
   return Promise.resolve(variableSetter(varName, result))
 }
 
 async function emitExecuteAsyncScript(script, varName) {
-  const result = `js.executeAsyncScript("var callback = arguments[arguments.length - 1];${
+  const result = `Selenide.executeAsyncJavaScript("var callback = arguments[arguments.length - 1];${
     script.script
   }.then(callback).catch(callback);${generateScriptArguments(script)}")`
   return Promise.resolve(variableSetter(varName, result))
@@ -382,33 +376,25 @@ function generateScriptArguments(script) {
 
 async function emitMouseDown(locator) {
   return Promise.resolve(
-    `Selenide.actions().moveToElement(${await location.emit(locator)}).clickAndHold().perform();`
+    `Selenide.actions().moveToElement($(${await location.emit(locator)})).clickAndHold().perform();`
   )
 }
 
 async function emitMouseMove(locator) {
   return Promise.resolve(
-    `Selenide.actions().moveToElement(${await location.emit(locator)}).perform();`
+    `Selenide.actions().moveToElement($(${await location.emit(locator)})).perform();`
   )
 }
 
 async function emitMouseOut() {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebElement element = driver.findElement(By.tagName("body"));`,
-    },
-    {level: 1, statement: 'Actions builder = new Actions(driver);'},
-    {level: 1, statement: 'builder.moveToElement(element, 0, 0).perform();'},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `Selenide.actions().moveToElement($(By.tagName("body")), 0, 0).perform();`
+  )
 }
 
 async function emitMouseUp(locator) {
   return Promise.resolve(
-    `Selenide.actions().moveToElement(${await location.emit(locator)}).release().perform();`
+    `Selenide.actions().moveToElement($(${await location.emit(locator)})).release().perform();`
   )
 }
 
@@ -420,14 +406,7 @@ function emitOpen(target) {
 }
 
 async function emitPause(time) {
-  const commands = [
-    {level: 0, statement: 'try {'},
-    {level: 1, statement: `Thread.sleep(${time});`},
-    {level: 0, statement: '} catch (InterruptedException e) {'},
-    {level: 1, statement: 'e.printStackTrace();'},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(`Selenide.sleep(${time});`)
 }
 
 async function emitRun(testName) {
@@ -436,14 +415,14 @@ async function emitRun(testName) {
 
 async function emitRunScript(script) {
   return Promise.resolve(
-    `js.executeScript("${script.script}${generateScriptArguments(script)}");`
+    `Selenide.executeJavaScript("${script.script}${generateScriptArguments(script)}");`
   )
 }
 
 async function emitSetWindowSize(size) {
   const [width, height] = size.split('x')
   return Promise.resolve(
-    `driver.manage().window().setSize(new Dimension(${width}, ${height}));`
+    `WebDriverRunner.getWebDriver().manage().window().setSize(new Dimension(${width}, ${height}));`
   )
 }
 
@@ -605,138 +584,52 @@ async function emitVerifyChecked(locator) {
   )
 }
 
-//// ----- stopped here
-
 async function emitVerifyEditable(locator) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebElement element = driver.findElement(${await location.emit(
-        locator
-      )});`,
-    },
-    {
-      level: 1,
-      statement:
-        'Boolean isEditable = element.isEnabled() && element.getAttribute("readonly") == null;',
-    },
-    {level: 1, statement: 'assertTrue(isEditable);'},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).shouldBe(enabled, not(readonly));`
+  )
 }
 
 async function emitVerifyElementPresent(locator) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `List<WebElement> elements = driver.findElements(${await location.emit(
-        locator
-      )});`,
-    },
-    {level: 1, statement: 'assert(elements.size() > 0);'},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).should(exist);`
+  )
 }
 
 async function emitVerifyElementNotPresent(locator) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `List<WebElement> elements = driver.findElements(${await location.emit(
-        locator
-      )});`,
-    },
-    {level: 1, statement: 'assert(elements.size() == 0);'},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).shouldNot(exist);`
+  )
 }
 
 async function emitVerifyNotChecked(locator) {
   return Promise.resolve(
-    `assertFalse(driver.findElement(${await location.emit(
-      locator
-    )}).isSelected());`
+    `$(${await location.emit(locator)}).shouldNotBe(checked);`
   )
 }
 
 async function emitVerifyNotEditable(locator) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebElement element = driver.findElement(${await location.emit(
-        locator
-      )});`,
-    },
-    {
-      level: 1,
-      statement:
-        'Boolean isEditable = element.isEnabled() && element.getAttribute("readonly") == null;',
-    },
-    {level: 1, statement: 'assertFalse(isEditable);'},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).shouldNotBe(enabled);`
+  )
 }
 
 async function emitVerifyNotSelectedValue(locator, expectedValue) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `String value = driver.findElement(${await location.emit(
-        locator
-      )}).getAttribute("value");`,
-    },
-    {
-      level: 1,
-      statement: `assertThat(value, is(not("${exporter.emit.text(
-        expectedValue
-      )}")));`,
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).shouldNotHave(value("${exporter.emit.text(expectedValue)}"));`
+  )
 }
 
 async function emitVerifyNotText(locator, text) {
-  const result = `driver.findElement(${await location.emit(locator)}).getText()`
   return Promise.resolve(
-    `assertThat(${result}, is(not("${exporter.emit.text(text)}")));`
+    `$(${await location.emit(locator)}).shouldNotHave(text("${exporter.emit.text(text)}"));`
   )
 }
 
 async function emitVerifySelectedLabel(locator, labelValue) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebElement element = driver.findElement(${await location.emit(
-        locator
-      )});`,
-    },
-    {level: 1, statement: 'String value = element.getAttribute("value");'},
-    {
-      level: 1,
-      statement: `String locator = String.format("option[@value='%s']", value);`,
-    },
-    {
-      level: 1,
-      statement:
-        'String selectedText = element.findElement(By.xpath(locator)).getText();',
-    },
-    {level: 1, statement: `assertThat(selectedText, is("${labelValue}"));`},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({
-    commands,
-  })
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).getSelectedOption().shouldHave(text("${labelValue}"));`
+  )
 }
 
 async function emitVerifySelectedValue(locator, value) {
@@ -745,70 +638,33 @@ async function emitVerifySelectedValue(locator, value) {
 
 async function emitVerifyText(locator, text) {
   return Promise.resolve(
-    `assertThat(driver.findElement(${await location.emit(
-      locator
-    )}).getText(), is("${exporter.emit.text(text)}"));`
+    `$(${await location.emit(locator)}).shouldHave(text("${exporter.emit.text(text)}"));`
   )
 }
 
 async function emitVerifyValue(locator, value) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `String value = driver.findElement(${await location.emit(
-        locator
-      )}).getAttribute("value");`,
-    },
-    {level: 1, statement: `assertThat(value, is("${value}"));`},
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).shouldHave(value("${value}"));`
+  )
 }
 
 async function emitVerifyTitle(title) {
-  return Promise.resolve(`assertThat(driver.getTitle(), is("${title}"));`)
+  return Promise.resolve(`assertEquals(Selenide.title(), "${title}");`)
 }
 
 async function emitWaitForElementEditable(locator, timeout) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebDriverWait wait = new WebDriverWait(driver, ${Math.floor(
-        timeout / 1000
-      )});`,
-    },
-    {
-      level: 1,
-      statement: `wait.until(ExpectedConditions.elementToBeClickable(${await location.emit(
-        locator
-      )}));`,
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(
+      locator
+    )}).waitUntil(and("element editable", visible, enabled), ${timeout});`
+  )
 }
 
 async function emitWaitForText(locator, text) {
   const timeout = 30000
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebDriverWait wait = new WebDriverWait(driver, ${Math.floor(
-        timeout / 1000
-      )});`,
-    },
-    {
-      level: 1,
-      statement: `wait.until(ExpectedConditions.textToBe(${await location.emit(
-        locator
-      )}, "${text}"));`,
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).waitUntil(text("${text}"), ${timeout});`
+  )
 }
 
 function skip() {
@@ -816,115 +672,35 @@ function skip() {
 }
 
 async function emitWaitForElementPresent(locator, timeout) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebDriverWait wait = new WebDriverWait(driver, ${Math.floor(
-        timeout / 1000
-      )});`,
-    },
-    {
-      level: 1,
-      statement: `wait.until(ExpectedConditions.presenceOfElementLocated(${await location.emit(
-        locator
-      )}));`,
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({commands})
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).waitUntil(exist, ${timeout});`
+  )
 }
 
 async function emitWaitForElementVisible(locator, timeout) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebDriverWait wait = new WebDriverWait(driver, ${Math.floor(
-        timeout / 1000
-      )});`,
-    },
-    {
-      level: 1,
-      statement: `wait.until(ExpectedConditions.visibilityOfElementLocated(${await location.emit(
-        locator
-      )}));`,
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({
-    commands,
-  })
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).waitUntil(visible, ${timeout});`
+  )
 }
 
 async function emitWaitForElementNotEditable(locator, timeout) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebDriverWait wait = new WebDriverWait(driver, ${Math.floor(
-        timeout / 1000
-      )});`,
-    },
-    {
-      level: 1,
-      statement: `wait.until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(${await location.emit(
-        locator
-      )})));`,
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({
-    commands,
-  })
+  return Promise.resolve(
+    `$(${await location.emit(
+      locator
+    )}).waitUntil(and("element not editable", not(visible), not(enabled)), ${timeout});`
+  )
 }
 
 async function emitWaitForElementNotPresent(locator, timeout) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebDriverWait wait = new WebDriverWait(driver, ${Math.floor(
-        timeout / 1000
-      )});`,
-    },
-    {
-      level: 1,
-      statement: `WebElement element = driver.findElement(${await location.emit(
-        locator
-      )});`,
-    },
-    {
-      level: 1,
-      statement: 'wait.until(ExpectedConditions.stalenessOf(element));',
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({
-    commands,
-  })
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).waitUntil(not(exist), ${timeout});`
+  )
 }
 
 async function emitWaitForElementNotVisible(locator, timeout) {
-  const commands = [
-    {level: 0, statement: '{'},
-    {
-      level: 1,
-      statement: `WebDriverWait wait = new WebDriverWait(driver, ${Math.floor(
-        timeout / 1000
-      )});`,
-    },
-    {
-      level: 1,
-      statement: `wait.until(ExpectedConditions.invisibilityOfElementLocated(${await location.emit(
-        locator
-      )}));`,
-    },
-    {level: 0, statement: '}'},
-  ]
-  return Promise.resolve({
-    commands,
-  })
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).waitUntil(disappears, ${timeout});`
+  )
 }
 
 export default {

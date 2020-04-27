@@ -1,3 +1,3 @@
-# code-export-java-junit
+# code-export-java-selenide
 
-Java JUnit code export for Selenium IDE.
+Java Selenide code export for Selenium IDE.
