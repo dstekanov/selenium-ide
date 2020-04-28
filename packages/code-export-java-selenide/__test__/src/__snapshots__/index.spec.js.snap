@@ -20,7 +20,7 @@ public class LoginTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -67,7 +67,7 @@ public class ControlflowTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -157,7 +157,7 @@ public class LoginTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -205,7 +205,7 @@ public class DefaultSuiteTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -255,7 +255,7 @@ public class DefaultSuiteTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -314,7 +314,7 @@ public class LoginTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -353,6 +353,7 @@ public class LoginTest {
   public void setUp() {
     Configuration.browser = \\"firefox\\";
     Configuration.remote = \\"http://localhost:4444/wd/hub\\";
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -390,7 +391,7 @@ public class ValidcredentialsTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {
@@ -432,7 +433,7 @@ public class SelectwindowTest {
   @BeforeEach
   public void setUp() {
     Configuration.browser = \\"chrome\\";
-    Configuration.remote = null;
+    vars = new HashMap<>();
   }
   @AfterEach
   public void tearDown() {

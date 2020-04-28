@@ -216,7 +216,7 @@ async function emitClick(target) {
 }
 
 async function emitClose() {
-  return Promise.resolve(`WebDriverRunner.closeWebDriver();`)
+  return Promise.resolve(`WebDriverRunner.closeWindow();`)
 }
 
 function generateExpressionScript(script) {
@@ -422,10 +422,9 @@ async function emitSetWindowSize(size) {
   )
 }
 
-// TODO: cannot change to Selenide style
 async function emitSelect(selectElement, option) {
   return Promise.resolve(
-    `$(${await location.emit(selectElement)}).$(${await selection.emit(option)}).click();`
+    `$(${await location.emit(selectElement)}).${await selection.emit(option)}`
   )
 }
 
@@ -649,11 +648,23 @@ async function emitVerifyTitle(title) {
 }
 
 async function emitWaitForElementEditable(locator, timeout) {
-  return Promise.resolve(
-    `$(${await location.emit(
-      locator
-    )}).waitUntil(and("element editable", visible, enabled), ${timeout});`
-  )
+  const commands = [
+    { level: 0, statement: '{' },
+    {
+      level: 1,
+      statement: `$(${await location.emit(
+        locator
+      )}).waitUntil(visible, ${timeout});`,
+    },
+    {
+      level: 1,
+      statement: `$(${await location.emit(
+        locator
+      )}).shouldBe(enabled);`,
+    },
+    { level: 0, statement: '}' },
+  ]
+  return Promise.resolve({ commands })
 }
 
 async function emitWaitForText(locator, text) {
@@ -680,11 +691,23 @@ async function emitWaitForElementVisible(locator, timeout) {
 }
 
 async function emitWaitForElementNotEditable(locator, timeout) {
-  return Promise.resolve(
-    `$(${await location.emit(
-      locator
-    )}).waitUntil(and("element not editable", not(visible), not(enabled)), ${timeout});` // TODO: change to 2 should's
-  )
+  const commands = [
+    { level: 0, statement: '{' },
+    {
+      level: 1,
+      statement: `$(${await location.emit(
+        locator
+      )}).waitUntil(not(visible), ${timeout});`,
+    },
+    {
+      level: 1,
+      statement: `$(${await location.emit(
+        locator
+      )}).shouldNotBe(enabled);`,
+    },
+    { level: 0, statement: '}' },
+  ]
+  return Promise.resolve({ commands })
 }
 
 async function emitWaitForElementNotPresent(locator, timeout) {

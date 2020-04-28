@@ -33,17 +33,17 @@ export default {
 }
 
 function emitId(id) {
-  return Promise.resolve(`Selectors.byId("${id}")`)
+  return Promise.resolve(`$(By.cssSelector("#${id}")).click();`)
 }
 
 function emitValue(value) {
-  return Promise.resolve(`Selectors.byValue("${value}")`)
+  return Promise.resolve(`selectOptionByValue("${value}");`)
 }
 
 function emitLabel(label) {
-  return Promise.resolve(`Selectors.byXpath("//option[. = '${label}']")`)
+  return Promise.resolve(`selectOption("${label}");`)
 }
 
 function emitIndex(index) {
-  return Promise.resolve(`Selectors.byCssSelector("*:nth-child(${index})")`)
+  return Promise.resolve(`selectOption(${index});`)
 }

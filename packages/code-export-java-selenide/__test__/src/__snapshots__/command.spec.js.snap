@@ -4,7 +4,7 @@ exports[`command code emitter should emit 'assert selected label' command 1`] = 
 
 exports[`command code emitter should emit 'verify selected label' command 1`] = `"$(Selectors.byId(\\"test\\")).getSelectedOption().shouldHave(text(\\"test\\"));"`;
 
-exports[`command code emitter should emit \`add selection\` command 1`] = `"$(\\"select\\").$(Selectors.byXpath(\\"//option[. = 'A label']\\")).click();"`;
+exports[`command code emitter should emit \`add selection\` command 1`] = `"$(\\"select\\").selectOption(\\"A label\\");"`;
 
 exports[`command code emitter should emit \`answer on visible prompt\` command 1`] = `"Selenide.prompt(\\"an answer\\");"`;
 
@@ -50,7 +50,7 @@ exports[`command code emitter should emit \`click at\` command 1`] = `"$(Selecto
 
 exports[`command code emitter should emit \`click\` command 1`] = `"$(Selectors.byLinkText(\\"button\\")).click();"`;
 
-exports[`command code emitter should emit \`close\` command 1`] = `"WebDriverRunner.closeWebDriver();"`;
+exports[`command code emitter should emit \`close\` command 1`] = `"WebDriverRunner.closeWindow();"`;
 
 exports[`command code emitter should emit \`do\` command 1`] = `
 Object {
@@ -139,7 +139,7 @@ exports[`command code emitter should emit \`open\` with absolute url 1`] = `"Sel
 
 exports[`command code emitter should emit \`pause\` command 1`] = `"Selenide.sleep(300);"`;
 
-exports[`command code emitter should emit \`remove selection\` command 1`] = `"$(\\"select\\").$(Selectors.byXpath(\\"//option[. = 'A label']\\")).click();"`;
+exports[`command code emitter should emit \`remove selection\` command 1`] = `"$(\\"select\\").selectOption(\\"A label\\");"`;
 
 exports[`command code emitter should emit \`repeatIf\` command 1`] = `"} while ((Boolean) Selenide.executeJavaScript(\\"return (true)\\"));"`;
 
@@ -157,7 +157,7 @@ exports[`command code emitter should emit \`select window\` to select a window b
 
 exports[`command code emitter should emit \`select window\` to select a window by the local keyword 1`] = `"Selenide.switchTo().window(0);"`;
 
-exports[`command code emitter should emit \`select\` command 1`] = `"$(\\"select\\").$(Selectors.byXpath(\\"//option[. = 'A label']\\")).click();"`;
+exports[`command code emitter should emit \`select\` command 1`] = `"$(\\"select\\").selectOption(\\"A label\\");"`;
 
 exports[`command code emitter should emit \`send keys\` command 1`] = `"$(Selectors.byId(\\"input\\")).val(\\"example input\\");"`;
 
@@ -228,9 +228,19 @@ exports[`command code emitter should emit \`verify value\` command 1`] = `"$(Sel
 
 exports[`command code emitter should emit \`verify\` command 1`] = `"assertEquals(vars.get(\\"varrrName\\").toString(), \\"blah\\");"`;
 
-exports[`command code emitter should emit \`waitForElementEditable\` command 1`] = `"$(\\"#blah\\").waitUntil(and(\\"element editable\\", visible, enabled), 5000);"`;
+exports[`command code emitter should emit \`waitForElementEditable\` command 1`] = `
+"{
+  $(\\"#blah\\").waitUntil(visible, 5000);
+  $(\\"#blah\\").shouldBe(enabled);
+}"
+`;
 
-exports[`command code emitter should emit \`waitForElementNotEditable\` command 1`] = `"$(\\"#blah\\").waitUntil(and(\\"element not editable\\", not(visible), not(enabled)), 5000);"`;
+exports[`command code emitter should emit \`waitForElementNotEditable\` command 1`] = `
+"{
+  $(\\"#blah\\").waitUntil(not(visible), 5000);
+  $(\\"#blah\\").shouldNotBe(enabled);
+}"
+`;
 
 exports[`command code emitter should emit \`waitForElementNotPresent\` command 1`] = `"$(\\"#blah\\").waitUntil(not(exist), 5000);"`;
 
