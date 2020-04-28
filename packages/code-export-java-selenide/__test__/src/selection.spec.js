@@ -32,14 +32,14 @@ describe('selection location code emitter', () => {
     const type = 'label'
     const selector = 'a label'
     return expect(emit(`${type}=${selector}`)).resolves.toBe(
-      `selectOption("${selector}").click();`
+      `selectOption("${selector}");`
     )
   })
   it('should emit id locator', () => {
     const type = 'id'
     const selector = 'someId'
     return expect(emit(`${type}=${selector}`)).resolves.toBe(
-      `$(By.cssSelector("#${selector}"));`
+      `$(By.cssSelector("#${selector}")).click();`
     )
   })
   it('should emit value locator', () => {
