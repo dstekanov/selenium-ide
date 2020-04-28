@@ -452,7 +452,7 @@ async function emitSelectWindow(windowLocation) {
     )
   } else if (/^name=/.test(windowLocation)) {
     return Promise.resolve(
-      `Selenide.switchTo().window(${windowLocation.split('name=')[1]});`
+      `Selenide.switchTo().window("${windowLocation.split('name=')[1]}");`
     )
   } else if (/^win_ser_/.test(windowLocation)) {
     if (windowLocation === 'win_ser_local') {

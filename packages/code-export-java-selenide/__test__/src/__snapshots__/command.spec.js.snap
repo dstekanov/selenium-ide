@@ -1,113 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`command code emitter should emit 'assert selected label' command 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"test\\"));
-  String value = element.getAttribute(\\"value\\");
-  String locator = String.format(\\"option[@value='%s']\\", value);
-  String selectedText = element.findElement(By.xpath(locator)).getText();
-  assertThat(selectedText, is(\\"test\\"));
-}"
-`;
+exports[`command code emitter should emit 'assert selected label' command 1`] = `"$(Selectors.byId(\\"test\\")).getSelectedOption().shouldHave(text(\\"test\\"));"`;
 
 exports[`command code emitter should emit 'verify selected label' command 1`] = `"$(Selectors.byId(\\"test\\")).getSelectedOption().shouldHave(text(\\"test\\"));"`;
 
-exports[`command code emitter should emit \`add selection\` command 1`] = `
-"{
-  WebElement dropdown = driver.findElement(By.cssSelector(\\"select\\"));
-  dropdown.findElement(By.xpath(\\"//option[. = 'A label']\\")).click();
-}"
-`;
+exports[`command code emitter should emit \`add selection\` command 1`] = `"$(\\"select\\").$(Selectors.byXpath(\\"//option[. = 'A label']\\")).click();"`;
 
 exports[`command code emitter should emit \`answer on visible prompt\` command 1`] = `"Selenide.prompt(\\"an answer\\");"`;
 
-exports[`command code emitter should emit \`assert alert\` command 1`] = `"assertThat(driver.switchTo().alert().getText(), is(\\"an alert\\"));"`;
+exports[`command code emitter should emit \`assert alert\` command 1`] = `"assertEquals(Selenide.switchTo().alert().getText(), \\"an alert\\");"`;
 
-exports[`command code emitter should emit \`assert checked\` command 1`] = `"assertTrue(driver.findElement(By.id(\\"check\\")).isSelected());"`;
+exports[`command code emitter should emit \`assert checked\` command 1`] = `"$(Selectors.byId(\\"check\\")).shouldBe(selected);"`;
 
-exports[`command code emitter should emit \`assert confirmation\` command 1`] = `"assertThat(driver.switchTo().alert().getText(), is(\\"a confirmation\\"));"`;
+exports[`command code emitter should emit \`assert confirmation\` command 1`] = `"assertEquals(Selenide.switchTo().alert().getText(), \\"a confirmation\\");"`;
 
-exports[`command code emitter should emit \`assert editable\` command 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"text\\"));
-  Boolean isEditable = element.isEnabled() && element.getAttribute(\\"readonly\\") == null;
-  assertTrue(isEditable);
-}"
-`;
+exports[`command code emitter should emit \`assert editable\` command 1`] = `"$(Selectors.byId(\\"text\\")).shouldBe(enabled, not(readonly));"`;
 
-exports[`command code emitter should emit \`assert element not present\` command 1`] = `
-"{
-  List<WebElement> elements = driver.findElements(By.id(\\"element\\"));
-  assert(elements.size() == 0);
-}"
-`;
+exports[`command code emitter should emit \`assert element not present\` command 1`] = `"$(Selectors.byId(\\"element\\")).shouldNot(exist);"`;
 
-exports[`command code emitter should emit \`assert element present\` command 1`] = `
-"{
-  List<WebElement> elements = driver.findElements(By.id(\\"element\\"));
-  assert(elements.size() > 0);
-}"
-`;
+exports[`command code emitter should emit \`assert element present\` command 1`] = `"$(Selectors.byId(\\"element\\")).should(exist);"`;
 
-exports[`command code emitter should emit \`assert not checked\` command 1`] = `"assertFalse(driver.findElement(By.id(\\"check\\")).isSelected());"`;
+exports[`command code emitter should emit \`assert not checked\` command 1`] = `"$(Selectors.byId(\\"check\\")).shouldNotBe(checked);"`;
 
-exports[`command code emitter should emit \`assert not editable\` command 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"text\\"));
-  Boolean isEditable = element.isEnabled() && element.getAttribute(\\"readonly\\") == null;
-  assertFalse(isEditable);
-}"
-`;
+exports[`command code emitter should emit \`assert not editable\` command 1`] = `"$(Selectors.byId(\\"text\\")).shouldNotBe(enabled);"`;
 
-exports[`command code emitter should emit \`assert not selected value\` command 1`] = `
-"{
-  String value = driver.findElement(By.id(\\"select\\")).getAttribute(\\"value\\");
-  assertThat(value, is(not(\\"test\\")));
-}"
-`;
+exports[`command code emitter should emit \`assert not selected value\` command 1`] = `"$(Selectors.byId(\\"select\\")).shouldNotHave(value(\\"test\\"));"`;
 
-exports[`command code emitter should emit \`assert not text\` command 1`] = `"assertThat(driver.findElement(By.id(\\"test\\")).getText(), is(not(\\"text\\")));"`;
+exports[`command code emitter should emit \`assert not text\` command 1`] = `"$(Selectors.byId(\\"test\\")).shouldNotHave(text(\\"text\\"));"`;
 
-exports[`command code emitter should emit \`assert prompt\` command 1`] = `"assertThat(driver.switchTo().alert().getText(), is(\\"a prompt\\"));"`;
+exports[`command code emitter should emit \`assert prompt\` command 1`] = `"assertEquals(Selenide.switchTo().alert().getText(), \\"a prompt\\");"`;
 
-exports[`command code emitter should emit \`assert selected value\` command 1`] = `
-"{
-  String value = driver.findElement(By.id(\\"select\\")).getAttribute(\\"value\\");
-  assertThat(value, is(\\"test\\"));
-}"
-`;
+exports[`command code emitter should emit \`assert selected value\` command 1`] = `"$(Selectors.byId(\\"select\\")).shouldHave(value(\\"test\\"));"`;
 
-exports[`command code emitter should emit \`assert text\` command 1`] = `"assertThat(driver.findElement(By.id(\\"test\\")).getText(), is(\\"some text that should be here\\"));"`;
+exports[`command code emitter should emit \`assert text\` command 1`] = `"$(Selectors.byId(\\"test\\")).shouldHave(text(\\"some text that should be here\\"));"`;
 
-exports[`command code emitter should emit \`assert title\` command 1`] = `"assertThat(driver.getTitle(), is(\\"example title\\"));"`;
+exports[`command code emitter should emit \`assert title\` command 1`] = `"assertEquals(Selenide.title(), \\"example title\\");"`;
 
-exports[`command code emitter should emit \`assert value\` command 1`] = `
-"{
-  String value = driver.findElement(By.id(\\"select\\")).getAttribute(\\"value\\");
-  assertThat(value, is(\\"test\\"));
-}"
-`;
+exports[`command code emitter should emit \`assert value\` command 1`] = `"$(Selectors.byId(\\"select\\")).shouldHave(value(\\"test\\"));"`;
 
 exports[`command code emitter should emit \`assert\` command 1`] = `"assertEquals(vars.get(\\"varrrName\\").toString(), \\"blah\\");"`;
 
-exports[`command code emitter should emit \`check\` command 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"f\\"));
-  if (!element.isSelected()) {
-    element.click();
-  }
-}"
-`;
+exports[`command code emitter should emit \`check\` command 1`] = `"$(Selectors.byId(\\"f\\")).setSelected(true);"`;
 
 exports[`command code emitter should emit \`choose cancel on visible prompt\` command 1`] = `"Selenide.dismiss();"`;
 
 exports[`command code emitter should emit \`choose ok on visible confirmation\` command 1`] = `"Selenide.confirm();"`;
 
-exports[`command code emitter should emit \`click at\` command 1`] = `"driver.findElement(By.linkText(\\"button\\")).click();"`;
+exports[`command code emitter should emit \`click at\` command 1`] = `"$(Selectors.byLinkText(\\"button\\")).click();"`;
 
-exports[`command code emitter should emit \`click\` command 1`] = `"driver.findElement(By.linkText(\\"button\\")).click();"`;
+exports[`command code emitter should emit \`click\` command 1`] = `"$(Selectors.byLinkText(\\"button\\")).click();"`;
 
-exports[`command code emitter should emit \`close\` command 1`] = `"driver.close();"`;
+exports[`command code emitter should emit \`close\` command 1`] = `"WebDriverRunner.closeWebDriver();"`;
 
 exports[`command code emitter should emit \`do\` command 1`] = `
 Object {
@@ -116,30 +59,11 @@ Object {
 }
 `;
 
-exports[`command code emitter should emit \`double click at\` command 1`] = `
-"{
-  WebElement element = driver.findElement(By.linkText(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.doubleClick(element).perform();
-}"
-`;
+exports[`command code emitter should emit \`double click at\` command 1`] = `"$(Selectors.byLinkText(\\"button\\")).doubleClick();"`;
 
-exports[`command code emitter should emit \`double click\` command 1`] = `
-"{
-  WebElement element = driver.findElement(By.linkText(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.doubleClick(element).perform();
-}"
-`;
+exports[`command code emitter should emit \`double click\` command 1`] = `"$(Selectors.byLinkText(\\"button\\")).doubleClick();"`;
 
-exports[`command code emitter should emit \`drag and drop to object\` command 1`] = `
-"{
-  WebElement dragged = driver.findElement(By.linkText(\\"dragged\\"));
-  WebElement dropped = driver.findElement(By.linkText(\\"dropped\\"));
-  Actions builder = new Actions(driver);
-  builder.dragAndDrop(dragged, dropped).perform();
-}"
-`;
+exports[`command code emitter should emit \`drag and drop to object\` command 1`] = `"$(Selectors.byLinkText(\\"dragged\\")).dragAndDropTo(Selectors.byLinkText(\\"dropped\\"));"`;
 
 exports[`command code emitter should emit \`echo\` command 1`] = `"System.out.println(\\"blah\\");"`;
 
@@ -147,14 +71,14 @@ exports[`command code emitter should emit \`echo\` command with variables 1`] = 
 
 exports[`command code emitter should emit \`edit content\` command 1`] = `
 "{
-  WebElement element = driver.findElement(By.id(\\"contentEditable\\"));
-  js.executeScript(\\"if(arguments[0].contentEditable === 'true') {arguments[0].innerText = '<button>test</button>'}\\", element);
+  SelenideElement element = $(Selectors.byId(\\"contentEditable\\"));
+  Selenide.executeJavaScript(\\"if(arguments[0].contentEditable === 'true') {arguments[0].innerText = '<button>test</button>'}\\", element);
 }"
 `;
 
 exports[`command code emitter should emit \`else if\` command 1`] = `
 Object {
-  "body": "} else if ((Boolean) js.executeScript(\\"return (true)\\")) {",
+  "body": "} else if ((Boolean) Selenide.executeJavaScript(\\"return (true)\\")) {",
   "endingLevel": 1,
 }
 `;
@@ -173,11 +97,11 @@ Object {
 }
 `;
 
-exports[`command code emitter should emit \`execute async script\` command 1`] = `"vars.put(\\"myVar\\", js.executeAsyncScript(\\"var callback = arguments[arguments.length - 1];javascript.then(callback).catch(callback);\\"));"`;
+exports[`command code emitter should emit \`execute async script\` command 1`] = `"vars.put(\\"myVar\\", Selenide.executeAsyncJavaScript(\\"var callback = arguments[arguments.length - 1];javascript.then(callback).catch(callback);\\"));"`;
 
-exports[`command code emitter should emit \`execute script\` command 1`] = `"vars.put(\\"myVar\\", js.executeScript(\\"javascript\\"));"`;
+exports[`command code emitter should emit \`execute script\` command 1`] = `"vars.put(\\"myVar\\", Selenide.executeJavaScript(\\"javascript\\"));"`;
 
-exports[`command code emitter should emit \`execute script\` command with return string value 1`] = `"vars.put(\\"myVar\\", js.executeScript(\\"return 'a'\\"));"`;
+exports[`command code emitter should emit \`execute script\` command with return string value 1`] = `"vars.put(\\"myVar\\", Selenide.executeJavaScript(\\"return 'a'\\"));"`;
 
 exports[`command code emitter should emit \`forEach\` command 1`] = `
 Object {
@@ -190,126 +114,52 @@ for (int iIteratorVar = 0; i < collectionCollection.size() - 1; iIteratorVar++) 
 
 exports[`command code emitter should emit \`if\` command 1`] = `
 Object {
-  "body": "if ((Boolean) js.executeScript(\\"return (true)\\")) {",
+  "body": "if ((Boolean) Selenide.executeJavaScript(\\"return (true)\\")) {",
   "endingLevel": 1,
 }
 `;
 
-exports[`command code emitter should emit \`mouse down at\` event 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element).clickAndHold().perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse down at\` event 1`] = `"Selenide.actions().moveToElement($(Selectors.byId(\\"button\\"))).clickAndHold().perform();"`;
 
-exports[`command code emitter should emit \`mouse down\` command 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element).clickAndHold().perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse down\` command 1`] = `"Selenide.actions().moveToElement($(Selectors.byId(\\"button\\"))).clickAndHold().perform();"`;
 
-exports[`command code emitter should emit \`mouse move at\` event 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element).perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse move at\` event 1`] = `"Selenide.actions().moveToElement($(Selectors.byId(\\"button\\"))).perform();"`;
 
-exports[`command code emitter should emit \`mouse move\` event 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element).perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse move\` event 1`] = `"Selenide.actions().moveToElement($(Selectors.byId(\\"button\\"))).perform();"`;
 
-exports[`command code emitter should emit \`mouse out\` event 1`] = `
-"{
-  WebElement element = driver.findElement(By.tagName(\\"body\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element, 0, 0).perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse out\` event 1`] = `"Selenide.actions().moveToElement($(Selectors.byTagName(\\"body\\")), 0, 0).perform();"`;
 
-exports[`command code emitter should emit \`mouse over\` event 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element).perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse over\` event 1`] = `"Selenide.actions().moveToElement($(Selectors.byId(\\"button\\"))).perform();"`;
 
-exports[`command code emitter should emit \`mouse up at\` event 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element).release().perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse up at\` event 1`] = `"Selenide.actions().moveToElement($(Selectors.byId(\\"button\\"))).release().perform();"`;
 
-exports[`command code emitter should emit \`mouse up\` event 1`] = `
-"{
-  WebElement element = driver.findElement(By.id(\\"button\\"));
-  Actions builder = new Actions(driver);
-  builder.moveToElement(element).release().perform();
-}"
-`;
+exports[`command code emitter should emit \`mouse up\` event 1`] = `"Selenide.actions().moveToElement($(Selectors.byId(\\"button\\"))).release().perform();"`;
 
-exports[`command code emitter should emit \`open\` with absolute url 1`] = `"driver.get(\\"https://www.seleniumhq.org/\\");"`;
+exports[`command code emitter should emit \`open\` with absolute url 1`] = `"Selenide.open(\\"https://www.seleniumhq.org/\\");"`;
 
-exports[`command code emitter should emit \`pause\` command 1`] = `
-"try {
-  Thread.sleep(300);
-} catch (InterruptedException e) {
-  e.printStackTrace();
-}"
-`;
+exports[`command code emitter should emit \`pause\` command 1`] = `"Selenide.sleep(300);"`;
 
-exports[`command code emitter should emit \`remove selection\` command 1`] = `
-"{
-  WebElement dropdown = driver.findElement(By.cssSelector(\\"select\\"));
-  dropdown.findElement(By.xpath(\\"//option[. = 'A label']\\")).click();
-}"
-`;
+exports[`command code emitter should emit \`remove selection\` command 1`] = `"$(\\"select\\").$(Selectors.byXpath(\\"//option[. = 'A label']\\")).click();"`;
 
-exports[`command code emitter should emit \`repeatIf\` command 1`] = `"} while ((Boolean) js.executeScript(\\"return (true)\\"));"`;
+exports[`command code emitter should emit \`repeatIf\` command 1`] = `"} while ((Boolean) Selenide.executeJavaScript(\\"return (true)\\"));"`;
 
-exports[`command code emitter should emit \`run script\` command 1`] = `"js.executeScript(\\"alert('test');alert('Im annoying');\\");"`;
+exports[`command code emitter should emit \`run script\` command 1`] = `"Selenide.executeJavaScript(\\"alert('test');alert('Im annoying');\\");"`;
 
 exports[`command code emitter should emit \`run\` command 1`] = `"sometestcase();"`;
 
-exports[`command code emitter should emit \`select frame\` to select the top frame 1`] = `"driver.switchTo().defaultContent();"`;
+exports[`command code emitter should emit \`select frame\` to select the top frame 1`] = `"Selenide.switchTo().defaultContent();"`;
 
-exports[`command code emitter should emit \`select window\` to select a window by handle 1`] = `"driver.switchTo().window(vars.get(\\"window\\").toString());"`;
+exports[`command code emitter should emit \`select window\` to select a window by handle 1`] = `"Selenide.switchTo().window(vars.get(\\"window\\").toString());"`;
 
-exports[`command code emitter should emit \`select window\` to select a window by implicit index 1`] = `
-"{
-  ArrayList<String> handles = new ArrayList<String>(driver.getWindowHandles());
-  driver.switchTo().window(handles.get(12));
-}"
-`;
+exports[`command code emitter should emit \`select window\` to select a window by implicit index 1`] = `"Selenide.switchTo().window(12);"`;
 
-exports[`command code emitter should emit \`select window\` to select a window by name 1`] = `"driver.switchTo().window(\\"window\\");"`;
+exports[`command code emitter should emit \`select window\` to select a window by name 1`] = `"Selenide.switchTo().window(\\"window\\");"`;
 
-exports[`command code emitter should emit \`select window\` to select a window by the local keyword 1`] = `
-"{
-  ArrayList<String> handles = new ArrayList<String>(driver.getWindowHandles());
-  driver.switchTo().window(handles.get(0));
-}"
-`;
+exports[`command code emitter should emit \`select window\` to select a window by the local keyword 1`] = `"Selenide.switchTo().window(0);"`;
 
-exports[`command code emitter should emit \`select\` command 1`] = `
-"{
-  WebElement dropdown = driver.findElement(By.cssSelector(\\"select\\"));
-  dropdown.findElement(By.xpath(\\"//option[. = 'A label']\\")).click();
-}"
-`;
+exports[`command code emitter should emit \`select\` command 1`] = `"$(\\"select\\").$(Selectors.byXpath(\\"//option[. = 'A label']\\")).click();"`;
 
-exports[`command code emitter should emit \`send keys\` command 1`] = `"driver.findElement(By.id(\\"input\\")).sendKeys(\\"example input\\");"`;
+exports[`command code emitter should emit \`send keys\` command 1`] = `"$(Selectors.byId(\\"input\\")).val(\\"example input\\");"`;
 
 exports[`command code emitter should emit \`send keys\` command with a key press 1`] = `"$(Selectors.byId(\\"input\\")).val(\\"SuperSecretPassword!\\").sendKeys(Keys.ENTER);"`;
 
