@@ -13,6 +13,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class LoginTest {
   private Map<String, Object> vars;
@@ -28,8 +29,8 @@ public class LoginTest {
   public void validcredentials() {
     Selenide.open(\\"http://the-internet.herokuapp.com/login\\");
     WebDriverRunner.getWebDriver().manage().window().setSize(new Dimension(1440, 1177));
-    $(Selectors.byId(\\"username\\")).setValue(\\"tomsmith\\");
-    $(Selectors.byId(\\"password\\")).setValue(\\"SuperSecretPassword!\\");
+    $(Selectors.byId(\\"username\\")).val(\\"tomsmith\\");
+    $(Selectors.byId(\\"password\\")).val(\\"SuperSecretPassword!\\");
     $(\\"#login button\\").click();
     $(\\".flash.success\\").shouldHave(text(\\"You logged into a secure area!\\\\\\\\\\\\\\\\n×\\"));
   }
@@ -37,8 +38,8 @@ public class LoginTest {
   public void invalidcredentials() {
     Selenide.open(\\"http://the-internet.herokuapp.com/login\\");
     WebDriverRunner.getWebDriver().manage().window().setSize(new Dimension(1440, 1177));
-    $(Selectors.byId(\\"username\\")).setValue(\\"blah\\");
-    $(Selectors.byId(\\"password\\")).setValue(\\"blah\\");
+    $(Selectors.byId(\\"username\\")).val(\\"blah\\");
+    $(Selectors.byId(\\"password\\")).val(\\"blah\\");
     $(\\"#login button\\").click();
     $(Selectors.byId(\\"flash\\")).shouldHave(text(\\"Your username is invalid!\\\\\\\\\\\\\\\\n×\\"));
   }
@@ -59,6 +60,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class ControlflowTest {
   private Map<String, Object> vars;
@@ -148,6 +150,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class LoginTest {
   private Map<String, Object> vars;
@@ -162,8 +165,8 @@ public class LoginTest {
   public void login() {
     Selenide.open(\\"https://the-internet.herokuapp.com/\\");
     $(Selectors.byLinkText(\\"Form Authentication\\")).click();
-    $(Selectors.byId(\\"username\\")).setValue(vars.get(\\"username\\").toString());
-    $(Selectors.byId(\\"password\\")).setValue(vars.get(\\"password\\").toString());
+    $(Selectors.byId(\\"username\\")).val(vars.get(\\"username\\").toString());
+    $(Selectors.byId(\\"password\\")).val(vars.get(\\"password\\").toString());
     $(\\".fa\\").click();
   }
   @Test
@@ -195,6 +198,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class DefaultSuiteTest {
   private Map<String, Object> vars;
@@ -244,6 +248,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class DefaultSuiteTest {
   private Map<String, Object> vars;
@@ -302,6 +307,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class LoginTest {
   private Map<String, Object> vars;
@@ -317,8 +323,8 @@ public class LoginTest {
   public void login() {
     Selenide.open(\\"http://the-internet.herokuapp.com/login\\");
     WebDriverRunner.getWebDriver().manage().window().setSize(new Dimension(1440, 1177));
-    $(Selectors.byId(\\"username\\")).setValue(\\"tomsmith\\");
-    $(Selectors.byId(\\"password\\")).setValue(\\"SuperSecretPassword!\\");
+    $(Selectors.byId(\\"username\\")).val(\\"tomsmith\\");
+    $(Selectors.byId(\\"password\\")).val(\\"SuperSecretPassword!\\");
     $(\\"#login button\\").click();
     $(\\".flash.success\\").shouldHave(text(\\"You logged into a secure area!\\\\\\\\\\\\\\\\n×\\"));
   }
@@ -339,6 +345,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class LoginTest {
   private Map<String, Object> vars;
@@ -354,8 +361,8 @@ public class LoginTest {
   public void login() {
     Selenide.open(\\"http://the-internet.herokuapp.com/login\\");
     WebDriverRunner.getWebDriver().manage().window().setSize(new Dimension(1440, 1177));
-    $(Selectors.byId(\\"username\\")).setValue(\\"tomsmith\\");
-    $(Selectors.byId(\\"password\\")).setValue(\\"SuperSecretPassword!\\");
+    $(Selectors.byId(\\"username\\")).val(\\"tomsmith\\");
+    $(Selectors.byId(\\"password\\")).val(\\"SuperSecretPassword!\\");
     $(\\"#login button\\").click();
     $(\\".flash.success\\").shouldHave(text(\\"You logged into a secure area!\\\\\\\\\\\\\\\\n×\\"));
   }
@@ -376,6 +383,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class ValidcredentialsTest {
   private Map<String, Object> vars;
@@ -390,8 +398,8 @@ public class ValidcredentialsTest {
   public void login() {
     Selenide.open(\\"https://the-internet.herokuapp.com/\\");
     $(Selectors.byLinkText(\\"Form Authentication\\")).click();
-    $(Selectors.byId(\\"username\\")).setValue(vars.get(\\"username\\").toString());
-    $(Selectors.byId(\\"password\\")).setValue(vars.get(\\"password\\").toString());
+    $(Selectors.byId(\\"username\\")).val(vars.get(\\"username\\").toString());
+    $(Selectors.byId(\\"password\\")).val(vars.get(\\"password\\").toString());
     $(\\".fa\\").click();
   }
   @Test
@@ -417,6 +425,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import java.util.*;
 public class SelectwindowTest {
   private Map<String, Object> vars;

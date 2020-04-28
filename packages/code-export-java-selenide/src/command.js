@@ -483,27 +483,27 @@ function generateSendKeysInput(value) {
     return value
       .map(s => {
         if (s.startsWith('vars.get')) {
-          return s
+          return `val(${s})`
         } else if (s.startsWith('Key[')) {
           const key = s.match(/\['(.*)'\]/)[1]
-          return `Keys.${key}`
+          return `sendKeys(Keys.${key})`
         } else {
-          return `"${s}"`
+          return `val("${s}")`
         }
       })
-      .join(', ')
+      .join('.')
   } else {
     if (value.startsWith('vars.get')) {
-      return value
+      return `val(${value})`
     } else {
-      return `"${value}"`
+      return `val("${value}")`
     }
   }
 }
 
 async function emitSendKeys(target, value) {
   return Promise.resolve(
-    `$(${await location.emit(target)}).setValue(${generateSendKeysInput(value)});`
+    `$(${await location.emit(target)}).${generateSendKeysInput(value)};`
   )
 }
 
@@ -564,7 +564,7 @@ async function emitSubmit(_locator) {
 
 async function emitType(target, value) {
   return Promise.resolve(
-    `$(${await location.emit(target)}).setValue(${generateSendKeysInput(value)});`
+    `$(${await location.emit(target)}).${generateSendKeysInput(value)};`
   )
 }
 
@@ -683,7 +683,7 @@ async function emitWaitForElementNotEditable(locator, timeout) {
   return Promise.resolve(
     `$(${await location.emit(
       locator
-    )}).waitUntil(and("element not editable", not(visible), not(enabled)), ${timeout});`
+    )}).waitUntil(and("element not editable", not(visible), not(enabled)), ${timeout});` // TODO: change to 2 should's
   )
 }
 

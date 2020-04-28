@@ -97,6 +97,7 @@ function beforeEach() {
           statement: `public void setUp() {`,
         },
         {level: 1, statement: `Configuration.browser = "${browserName ? browserName.toLowerCase() : 'chrome'}";`},
+        // TODO: gridUrl ? {browser+remote} : {browser}
         {
           level: 1,
           statement: gridUrl
@@ -126,6 +127,7 @@ function declareDependencies() {
         {level: 0, statement: 'import static com.codeborne.selenide.Selenide.*;'},
         {level: 0, statement: 'import static org.junit.jupiter.api.Assertions.*;'},
         {level: 0, statement: 'import org.openqa.selenium.Dimension;'},
+        {level: 0, statement: 'import org.openqa.selenium.Keys;'}, //TODO change tests
         {level: 0, statement: 'import java.util.*;'},
       ],
     },
