@@ -281,11 +281,11 @@ function emitControlFlowForEach(collectionVarName, iteratorVarName) {
       },
       {
         level: 0,
-        statement: `for (int i${iteratorName} = 0; i < collection${collectionName}.size() - 1; i${iteratorName}++) {`,
+        statement: `for (int i${iteratorName} = 0; i${iteratorName} < collection${collectionName}.size() - 1; i${iteratorName}++) {`,
       },
       {
         level: 1,
-        statement: `vars.put("${iteratorVarName}", collection${collectionName}.get(i));`,
+        statement: `vars.put("${iteratorVarName}", collection${collectionName}.get(i${iteratorName}));`,
       },
     ],
   })
