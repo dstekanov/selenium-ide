@@ -555,9 +555,9 @@ async function emitStoreXpathCount(locator, varName) {
   return Promise.resolve(variableSetter(varName, result))
 }
 
-async function emitSubmit(_locator) {
+async function emitSubmit(locator) {
   return Promise.resolve(
-    `throw new Error("\`submit\` is not a supported command in Selenium WebDriver. Please re-record the step in the IDE.");`
+    `$(${await location.emit(locator)}).submit();`
   )
 }
 
@@ -691,23 +691,9 @@ async function emitWaitForElementVisible(locator, timeout) {
 }
 
 async function emitWaitForElementNotEditable(locator, timeout) {
-  const commands = [
-    { level: 0, statement: '{' },
-    {
-      level: 1,
-      statement: `$(${await location.emit(
-        locator
-      )}).waitUntil(not(visible), ${timeout});`,
-    },
-    {
-      level: 1,
-      statement: `$(${await location.emit(
-        locator
-      )}).shouldNotBe(enabled);`,
-    },
-    { level: 0, statement: '}' },
-  ]
-  return Promise.resolve({ commands })
+  return Promise.resolve(
+    `$(${await location.emit(locator)}).waitUntil(not(enabled), ${timeout});`
+  )
 }
 
 async function emitWaitForElementNotPresent(locator, timeout) {

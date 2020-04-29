@@ -106,8 +106,8 @@ exports[`command code emitter should emit \`execute script\` command with return
 exports[`command code emitter should emit \`forEach\` command 1`] = `
 Object {
   "body": "ArrayList collectionCollection = (ArrayList) vars.get(\\"collection\\");
-for (int iIteratorVar = 0; i < collectionCollection.size() - 1; iIteratorVar++) {
-  vars.put(\\"iteratorVar\\", collectionCollection.get(i));",
+for (int iIteratorVar = 0; iIteratorVar < collectionCollection.size() - 1; iIteratorVar++) {
+  vars.put(\\"iteratorVar\\", collectionCollection.get(iIteratorVar));",
   "endingLevel": 1,
 }
 `;
@@ -188,7 +188,7 @@ exports[`command code emitter should emit \`store xpath count\` command 1`] = `"
 
 exports[`command code emitter should emit \`store\` command 1`] = `"vars.put(\\"myVar\\", \\"some value\\");"`;
 
-exports[`command code emitter should emit \`submit\` command 1`] = `"throw new Error(\\"\`submit\` is not a supported command in Selenium WebDriver. Please re-record the step in the IDE.\\");"`;
+exports[`command code emitter should emit \`submit\` command 1`] = `"$(Selectors.byId(\\"form\\")).submit();"`;
 
 exports[`command code emitter should emit \`times\` command 1`] = `
 Object {
@@ -235,12 +235,7 @@ exports[`command code emitter should emit \`waitForElementEditable\` command 1`]
 }"
 `;
 
-exports[`command code emitter should emit \`waitForElementNotEditable\` command 1`] = `
-"{
-  $(\\"#blah\\").waitUntil(not(visible), 5000);
-  $(\\"#blah\\").shouldNotBe(enabled);
-}"
-`;
+exports[`command code emitter should emit \`waitForElementNotEditable\` command 1`] = `"$(\\"#blah\\").waitUntil(not(enabled), 5000);"`;
 
 exports[`command code emitter should emit \`waitForElementNotPresent\` command 1`] = `"$(\\"#blah\\").waitUntil(not(exist), 5000);"`;
 
